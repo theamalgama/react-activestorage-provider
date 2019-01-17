@@ -85,6 +85,15 @@ class Upload {
     })
   }
 
+  cancelUpload = () => {
+	  this.handleChangeFile({
+		  state: 'cancelled',
+		  file: this.directUpload.file,
+		  id: this.id,
+		  progress: 100
+	  })
+  }
+
   handleSuccess = (signedId: string) => {
     this.handleChangeFile({
       state: 'finished',
@@ -139,6 +148,7 @@ class Upload {
       })
 
     xhr.upload.addEventListener('progress', this.handleProgress)
+    xhr.upload.addEventListener('abort', this.cancelUpload)
   }
 
   /**

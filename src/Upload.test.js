@@ -174,6 +174,10 @@ describe('Upload', () => {
           'progress',
           upload.handleProgress
         )
+        expect(xhr.upload.addEventListener).toHaveBeenCalledWith(
+          'abort',
+          upload.cancelUpload
+        )
       })
     })
 
@@ -188,6 +192,21 @@ describe('Upload', () => {
             file,
             progress: 20,
           },
+        })
+      })
+    })
+
+    describe('cancelUpload', () => {
+      it('reports uploading with the progress', () => {
+        const upload = new Upload(file, options)
+        upload.cancelUpload()
+        expect(options.onChangeFile).toHaveBeenCalledWith({
+          id: {
+            state: 'cancelled',
+            file: file,
+            id: 'id',
+            progress: 100
+          }
         })
       })
     })
